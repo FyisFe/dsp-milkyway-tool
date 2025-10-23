@@ -6,6 +6,7 @@ import sys
 from downloader import FullDataDownloader
 from statistics_downloader import StatisticsDownloader
 from user_data_downloader import UserDataDownloader
+from cluster_player_downloader import ClusterPlayerDownloader
 
 
 def setup_logging() -> None:
@@ -89,6 +90,56 @@ def download_user_data() -> None:
     print(f"\nSaved to: output/user_data.csv")
 
 
+def download_cluster_players() -> None:
+    """Download and parse cluster player data by seed."""
+    logger = logging.getLogger(__name__)
+
+    # Ask for seed parameters
+    print("\nEnter seed parameters:")
+
+    try:
+        seed = int(input("种子 (Seed): ").strip())
+        stars = int(input("星数 (Stars): ").strip())
+
+        # Resource multiplier input
+        res_mult_str = input("资源倍率 (Resource Multiplier, e.g., 1.0, 9.9 for 无限): ").strip()
+        res_mult_float = float(res_mult_str)
+        res_mult_raw = int(res_mult_float * 10)  # Convert 1.0 to 10, 0.5 to 5, 9.9 to 99
+
+        # Combat difficulty input
+        combat_str = input("战斗难度 (Combat Difficulty, 000 for peace, 1xx for combat <1-100>, e.g. 100 for 00, 199 for 99): ").strip()
+        combat_raw = int(combat_str)
+
+        # Max pages
+        max_pages_str = input("Maximum pages to download (default 10): ").strip()
+        max_pages = int(max_pages_str) if max_pages_str else 10
+
+    except ValueError as e:
+        logger.error(f"Invalid input: {e}")
+        print("Invalid input. Please enter valid numbers.")
+        return
+
+    print(f"\nSearching for players with:")
+    print(f"  Seed: {seed}")
+    print(f"  Stars: {stars}")
+    print(f"  Resource Multiplier: {res_mult_float}x (raw: {res_mult_raw})")
+    print(f"  Combat Difficulty: {combat_raw}")
+
+    downloader = ClusterPlayerDownloader(platform=1)  # 1 = Steam
+    logger.info(f"Using user ID: {downloader.user_id}")
+
+    # Download and parse cluster player data
+    players = downloader.download_and_parse_cluster_players(
+        seed, stars, res_mult_raw, combat_raw, max_pages
+    )
+    logger.info("Cluster player download completed successfully")
+
+    # Print summary
+    print("\n=== DSP Milky Way Cluster Players ===")
+    print(f"Total Records Downloaded: {len(players)}")
+    print(f"\nSaved to: output/cluster_players.csv")
+
+
 def main() -> None:
     """Main entry point for the DSP Milky Way data downloader."""
     setup_logging()
@@ -99,9 +150,10 @@ def main() -> None:
     print("1. Download statistics data")
     print("2. Download full data")
     print("3. Download all user data")
+    print("4. Download cluster players by seed")
     print("0. Exit")
 
-    choice = input("\nEnter your choice (0-3): ").strip()
+    choice = input("\nEnter your choice (0-4): ").strip()
 
     if choice == "1":
         try:
@@ -121,11 +173,17 @@ def main() -> None:
         except Exception as e:
             logger.error(f"An error occurred: {e}")
             raise
+    elif choice == "4":
+        try:
+            download_cluster_players()
+        except Exception as e:
+            logger.error(f"An error occurred: {e}")
+            raise
     elif choice == "0":
         print("Exiting...")
         sys.exit(0)
     else:
-        print("Invalid choice. Please enter 0-3.")
+        print("Invalid choice. Please enter 0-4.")
         sys.exit(1)
 
 

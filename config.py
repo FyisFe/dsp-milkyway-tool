@@ -13,6 +13,7 @@ class Config:
     download_full_data_api: str = "download"
     get_statistic_api: str = "query/statisticdata"
     get_all_user_data_api: str = "query/alluserdata"
+    get_cluster_user_page_api: str = "query/clusteruserpage"
     output_dir: str = "output"
 
     @property
@@ -40,6 +41,11 @@ class Config:
         """Get path for user data CSV file in output directory."""
         return os.path.join(self.output_dir, "user_data.csv")
 
+    @property
+    def cluster_players_csv(self) -> str:
+        """Get path for cluster players CSV file in output directory."""
+        return os.path.join(self.output_dir, "cluster_players.csv")
+
     def get_login_url(self, user_id: int) -> str:
         """Get the login URL with user ID."""
         return f"{self.server_address}{self.login_header_api}?user_id={user_id}"
@@ -55,6 +61,10 @@ class Config:
     def get_all_user_data_url(self, user_id: int, platform: int) -> str:
         """Get the all user data URL with user ID and platform."""
         return f"{self.server_address}{self.get_all_user_data_api}?user_id={user_id}&platform={platform}"
+
+    def get_cluster_user_page_url(self, seed_key: int, page_index: int, page_size: int, user_id: int, platform: int) -> str:
+        """Get the cluster user page URL with all parameters."""
+        return f"{self.server_address}{self.get_cluster_user_page_api}?seed={seed_key}&page_index={page_index}&page_size={page_size}&user_id={user_id}&platform={platform}"
 
     def ensure_output_dir(self) -> None:
         """Create output directory if it doesn't exist."""

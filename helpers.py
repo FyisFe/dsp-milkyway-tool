@@ -68,3 +68,22 @@ def decode_seed_key(seed_key: int) -> tuple[int, int, str, str]:
     res_mult = resource_multiplier((seed_key // 1000) % 100)
     combat = combat_mode_difficulty_number(seed_key % 1000)
     return seed, stars, res_mult, combat
+
+
+def encode_seed_key(seed: int, stars: int, res_mult_raw: int, combat_raw: int) -> int:
+    """
+    Encode seed components into a seed key.
+
+    Args:
+        seed: The seed number
+        stars: Number of stars
+        res_mult_raw: Resource multiplier (raw value, e.g., 10 for 1.0x)
+        combat_raw: Combat difficulty (raw value)
+
+    Returns:
+        Encoded seed key
+
+    Example:
+        encode_seed_key(12345678, 64, 10, 0) -> seed key for seed 12345678, 64 stars, 1.0x resources, peace mode
+    """
+    return seed * 100_000_000 + stars * 100_000 + res_mult_raw * 1000 + combat_raw
