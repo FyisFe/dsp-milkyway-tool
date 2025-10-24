@@ -3,6 +3,7 @@
 import io
 import csv
 import logging
+import time
 from typing import Optional
 
 from binary_reader import BinReader
@@ -63,6 +64,11 @@ class ClusterPlayerDownloader:
             page_size = 10  # Fixed page size as per C# code
 
             for page_index in range(max_pages):
+                # Wait 0.5 second before each API call
+                if page_index > 0:
+                    logger.info("Waiting 0.5 second before next request...")
+                    time.sleep(0.5)
+
                 logger.info(f"Fetching page {page_index}...")
 
                 # Download page
