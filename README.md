@@ -12,6 +12,10 @@ A Python tool for downloading and parsing Dyson Sphere Program Milky Way server 
 - Given steam id, download all user data to CSV
 - Search and download cluster players by seed parameters
 
+## Reference
+
+- https://github.com/soarqin/dsp-milkyway
+
 ## Installation
 
 ```bash
