@@ -9,7 +9,7 @@ A Python tool for downloading and parsing Dyson Sphere Program Milky Way server 
 
 - Download Milky Way statistics (total players, generation capacity, Dyson spheres, etc.)
 - Download full game data
-- Download all user data to CSV
+- Given steam id, download all user data to CSV
 - Search and download cluster players by seed parameters
 
 ## Installation
