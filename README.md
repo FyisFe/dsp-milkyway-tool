@@ -2,6 +2,9 @@
 
 A Python tool for downloading and parsing Dyson Sphere Program Milky Way server data.
 
+> Don’t blame me for the code smells and duplicates — it’s pure vibe coding, and hey, it works.
+> i18n still pending, so enjoy the Mandarin-English fusion for now
+
 ## Features
 
 - Download Milky Way statistics (total players, generation capacity, Dyson spheres, etc.)
